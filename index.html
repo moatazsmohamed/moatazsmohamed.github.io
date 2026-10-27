@@ -1,0 +1,1571 @@
+﻿<!DOCTYPE html>
+<!-- ============================================================================
+     PORTFOLIO — M & M · Moataz Mohamed
+     الملف: index.html  (الصفحة الوحيدة في الموقع)
+     ============================================================================
+
+     الموقع صفحة واحدة (One Page) — كل الأقسام في الملف ده، والتنقل بينها
+     باللينكات الداخلية (#home / #about / #portfolio / #contact).
+
+     ----------------------------------------------------------------------------
+     الملفات اللي الربط بيها
+     ----------------------------------------------------------------------------
+       • 11.css     → ملف التنسيقات الوحيد (في الـ <head>)
+       • script.js  → ملف الجافاسكربت الوحيد (في آخر الـ <body> وعليه defer)
+       • manifest.json / img/... → الميتاداتا والصور
+
+     ----------------------------------------------------------------------------
+     خريطة الملف (بالترتيب)
+     ----------------------------------------------------------------------------
+       <head>  الميتاداتا والخطوط وملفات التنسيق
+       ├─ طبقات الخلفية التفاعلية (شبكة، هالة، مؤشر الماوس المخصص)
+       ├─ شاشة التحميل (Preloader)
+       ├─ شاشة الاسم اللامع (Name Intro)
+       ├─ <header> الشريط العلوي (لوجو + تنقل + بحث + إعدادات)
+       ├─ نافذة مواقع التواصل (منبثقة)
+       ├─ <main id="home">      → قسم الهيرو
+       ├─ <section id="about">   → عني + سلايدر التقنيات + الشهادات
+       ├─ <section id="summary"> → النبذة المهنية (الهدف الوظيفي)
+       ├─ <section id="portfolio"> → كارت المشروع
+       ├─ <section id="experience"> → الخبرات (خط زمني)
+       ├─ <section id="skills">    → المهارات (4 مجموعات)
+       ├─ <section id="courses">   → الدورات والدراسة
+       ├─ <section id="contact">   → شريط التواصل + النموذج
+       └─ <footer>            → بياناتي + التواصل الاجتماعي
+
+     ----------------------------------------------------------------------------
+     قاعدة مهمة للتيم (الترجمة)
+     ----------------------------------------------------------------------------
+     أي نص بيظهر للمستخدم بنحط عليه data-i18n="مفتاح"
+     وحقول الإدخال بنحط عليها data-i18n-placeholder="مفتاح"
+
+     والمفتاح ده لازم يكون موجود في script.js (القسم 1) في النسختين:
+       ar: { مفتاح: 'النص العربي' }
+       en: { مفتاح: 'English text' }
+
+     لو نسيت أي واحدة من التلاتة، النص هيفضل زي ما هو أو يطلع فاضي.
+     النصوص الثابتة (زي الإيميل والأسماء) مش محتاجة data-i18n.
+     ============================================================================ -->
+<html lang="ar" dir="rtl">
+<head>
+
+<!-- البيانات الأساسية للموقع -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moataz Mohamed | Frontend Developer Portfolio</title>
+
+    <!-- بيانات المؤلف وتاريخ النشر -->
+    <meta name="author" content="Moataz Mohamed">
+    <meta property="article:author" content="Moataz Mohamed" />
+    <meta property="article:published_time" content="2026-09-21T00:00:00+00:00" />
+
+    <!-- وصف محركات البحث (Google) -->
+    <meta name="description" content="Portfolio of Moataz Mohamed, a frontend developer in Alexandria building bilingual web and mobile apps with JavaScript, React Native and Supabase. Explore Madar, MS Woodworks and TAFRA.">
+    <meta name="keywords" content="Moataz Mohamed, معتز محمد, Frontend Developer, Web Developer, Alexandria, React Native, Supabase, Portfolio, JavaScript">
+    <link rel="canonical" href="https://portfolio-moataz.vercel.app/">
+
+    <!-- Open Graph / Facebook / LinkedIn Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://portfolio-moataz.vercel.app/" />
+    <meta property="og:title" content="Moataz Mohamed | Frontend Developer Portfolio" />
+    <meta property="og:description" content="Frontend developer in Alexandria building bilingual web and mobile apps. Explore Madar, MS Woodworks, TAFRA and a portfolio with a built-in AI assistant." />
+    <meta property="og:image" content="https://portfolio-moataz.vercel.app/img/og-cover.png" />
+    <meta property="og:image:secure_url" content="https://portfolio-moataz.vercel.app/img/og-cover.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Moataz Mohamed — Frontend Developer portfolio cover" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ar_EG" />
+
+    <!-- Twitter / X Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://portfolio-moataz.vercel.app/" />
+    <meta name="twitter:title" content="Moataz Mohamed | Frontend Developer Portfolio" />
+    <meta name="twitter:description" content="Frontend developer in Alexandria building bilingual web and mobile apps. Explore Madar, MS Woodworks, TAFRA and a built-in AI assistant." />
+    <meta name="twitter:image" content="https://portfolio-moataz.vercel.app/img/og-cover.png" />
+    <meta name="twitter:image:alt" content="Moataz Mohamed — Frontend Developer portfolio cover" />
+
+
+    <!-- أيقونة الموقع (Favicon) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0d14">
+
+    <!-- بيانات منظمة لمحركات البحث (Person) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Moataz Mohamed",
+      "alternateName": "معتز محمد",
+      "jobTitle": "Frontend Developer",
+      "url": "https://portfolio-moataz.vercel.app/",
+      "image": "https://portfolio-moataz.vercel.app/img/og-cover.png",
+      "email": "mailto:mtzm2225@gmail.com",
+      "telephone": "+201035712862",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Alexandria",
+        "addressCountry": "EG"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Borg El Arab Technological University"
+      },
+      "knowsAbout": ["JavaScript", "HTML5", "CSS3", "React Native", "Expo", "TypeScript", "Supabase", "PostgreSQL", "Responsive Web Design"],
+      "sameAs": [
+        "https://github.com/moatazsmohamed",
+        "https://www.linkedin.com/in/moataz-mohamed-342b32399"
+      ]
+    }
+    </script>
+
+    <!-- تسريع التحميل: نفتح الاتصال بالسيرفرات الخارجية بدري ونحمّل الصور كسول -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
+    <!-- الخطوط والأيقونات (Google Fonts + Font Awesome) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+
+    <!-- ====================================================================
+         ملف التنسيقات الرئيسي (الوحيد)
+         كل التنسيقات في 11.css — وفيها فهرس كامل في أول الملف
+         ==================================================================== -->
+    <link rel="stylesheet" href="11.css">
+
+    <!-- Google Analytics (gtag.js) -->
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6XHL092W9E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6XHL092W9E');
+</script>
+</head>
+
+<body>
+
+    <!-- ====================================================================
+         طبقات الخلفية التفاعلية «الخيالية البرمجية»
+         --------------------------------------------------------------------
+         • .bg-scanlines — خطوط ماسحة بتعدّي ببطء على الخلفية
+         • .bg-grid-glow — شبكة كود بتضيء حوالي الماوس
+         • .cursor-aura  — هالة ذهبية بتجري ورا الماوس
+         • .cursor-ring  — حلقة بتنطق عند الحركة السريعة/الكليك
+
+         كلها pointer-events: none عشان ما تلمسش أي تفاعل،
+         وكلها تحت المحتوى. بتتحرّك من script.js وبتتوقف على الأجهزة اللمسية.
+         ==================================================================== -->
+    <div class="bg-scanlines" aria-hidden="true"></div>
+    <div class="bg-grid-glow" aria-hidden="true"></div>
+    <div class="cursor-aura" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
+    <!-- ====================================================================
+         مؤشر الماوس المخصص (Custom Cursor)
+         --------------------------------------------------------------------
+         مؤشر النظام بيتخفي (cursor: none) وبنسيب مكانه حاجتين متراكبتين:
+
+           .cursor-dot-arrow → سهم ذهبي (الشكل العادي)
+           .cursor-dot-hand  → إيد (بتحل مكان السهم على الزرار واللينكات)
+
+         والاتنين جواهم SVG مش صور — عشان يبقوا حادين على أي مقاس شاشة
+         ومن غير أي طلب ملف خارجي.
+
+         ⚠️ التبديل بين الشكلين (سهم/إيد) واخفاؤهم في حقول الكتابة
+         بيتم من script.js (القسم 15.2) — إحنا هنا بس بنحط الأشكال.
+
+         ملاحظة: على الموبايل/التابلت مفيش ماوس أساسًا، فالكود بتاع
+         المؤشر مبيشتغلش والقسم ده بيتجاهل تمامًا.
+         ==================================================================== -->
+    <div class="cursor-dot" aria-hidden="true">
+        <svg class="cursor-dot-arrow" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+                <linearGradient id="cursorArrowFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#fff4cf" />
+                    <stop offset="45%" stop-color="#f6c344" />
+                    <stop offset="100%" stop-color="#c99a1e" />
+                </linearGradient>
+            </defs>
+            <!-- جسم السهم: زوايا حادة زي مؤشر محرر الأكواد -->
+            <path d="M1 1 L1 17.2 L5.35 13.05 L8.1 19.6 L11.1 18.25 L8.4 11.85 L14.6 11.65 Z"
+                  fill="url(#cursorArrowFill)"
+                  stroke="#0a090c"
+                  stroke-width="1.1"
+                  stroke-linejoin="round" />
+        </svg>
+
+        <!-- أيقونة الإيد الصغيرة: بتظهر لما نعدّي على زرار أو لينك -->
+        <svg class="cursor-dot-hand" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- كف الإيد -->
+            <path d="M9.2 11.4V5.6a1.4 1.4 0 0 1 2.8 0v5.2m0-1.2V4.4a1.4 1.4 0 0 1 2.8 0v6.3m0-2.1a1.35 1.35 0 0 1 2.7 0v6.6m-8.3-3.8V7.6a1.35 1.35 0 0 0-2.7 0v7.6c0 3 2.4 5.4 5.4 5.4h2.3c2.6 0 4.7-2.1 4.7-4.7v-4.6"
+                  fill="#f6c344"
+                  stroke="#0a090c"
+                  stroke-width="1.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round" />
+            <!-- لمعة بيضا صغيرة عشان الإيد تبان عليها الإضاءة -->
+            <path d="M10.6 6.4v3.2"
+                  stroke="#fff4cf"
+                  stroke-width="1"
+                  stroke-linecap="round"
+                  opacity="0.85" />
+        </svg>
+    </div>
+
+    <!-- ====================================================================
+         شاشة التحميل (Preloader)
+         بتغطي الشاشة كاملة، والجافاسكربت بيضيف كلاس fade-out لإخفائها
+         ==================================================================== -->
+    <div id="preloader" class="space-theme">
+        <div class="loader-content">
+            <div class="stars-overlay"></div>
+
+            <div class="circular-wrapper">
+                <div class="logo-container">
+                    <img src="img/logo.webp" alt="M&M Logo" class="space-logo" width="256" height="256">
+                </div>
+
+                <div class="orbit-ring ring-1"></div>
+                <div class="orbit-ring ring-2"></div>
+                <div class="orbit-ring ring-3"></div>
+
+                <div class="space-glow"></div>
+            </div>
+
+            <div class="loader-status">
+                <span>Loading System...</span>
+                <div class="status-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         شاشة الترحيب بالاسم (Name Intro)
+         بتظهر بعد اختفاء شاشة التحميل تمامًا، واسم "Moataz Mohamed" بيعدّي
+         عليه شعاع لمعة (Shine) من الشمال لليمين.
+
+         التفاعل: حرّك الماوس على الاسم → اللمعة تستجيب للماوس،
+         وكليك / Enter → أفيكت ضوئي والاسم يتشال من الصفحة.
+         (كل ده متوصّل من script.js)
+         ==================================================================== -->
+    <div id="name-intro" class="name-intro" aria-hidden="true">
+        <div class="name-intro-inner">
+            <p class="name-intro-kicker">Welcome to my world</p>
+            <h1 class="name-intro-title">
+                <span class="name-intro-text">Moataz Mohamed</span>
+            </h1>
+            <div class="name-intro-underline"></div>
+        </div>
+
+        <!-- حلقة ضوئية بتتوسّع من الاسم لحظة الكليك/Enter (أفيكت الخروج) -->
+        <div class="name-intro-burst" aria-hidden="true"></div>
+        <!-- فلاش ذهبي بيعمّ الشاشة لحظة الخروج -->
+        <div class="name-intro-flash" aria-hidden="true"></div>
+    </div>
+
+    <!-- ====================================================================
+         رأس الموقع (Header) — اللوجو، روابط التنقل، البحث، والإعدادات
+         ==================================================================== -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="img/logo.webp" alt="Logo" width="256" height="256">
+            <span class="logo-text">M & M</span>
+        </div>
+
+        <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav" data-i18n-aria-label="menuLabel">
+            <span class="nav-toggle-line"></span>
+            <span class="nav-toggle-line"></span>
+            <span class="nav-toggle-line"></span>
+        </button>
+
+        <nav class="nav-links" id="site-nav" aria-label="Main navigation">
+            <a href="#home" class="active" data-i18n="home">Home</a>
+            <a href="#about" data-i18n="about">About Me</a>
+            <a href="#summary" data-i18n="summaryNav">Summary</a>
+            <a href="#portfolio" data-i18n="portfolio">Portfolio</a>
+            <a href="#experience" data-i18n="experienceNav">Experience</a>
+            <a href="#skills" data-i18n="skillsNav">Skills</a>
+            <a href="#contact" data-i18n="contact">Contact</a>
+
+            <div class="search-box">
+    <label for="search-input" class="sr-only" data-i18n="search">Search</label>
+    <input type="text" id="search-input" placeholder="Search..." class="search-input" data-i18n-placeholder="search">
+    <button class="search-btn" aria-label="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+</div>
+
+            <div class="header-actions">
+                <div class="settings-menu">
+                    <button class="settings-pill" type="button" aria-expanded="false" aria-controls="settings-dropdown"
+                            onclick="const panel=this.nextElementSibling; const isHidden=panel.classList.contains('hidden'); panel.classList.toggle('hidden', !isHidden); this.setAttribute('aria-expanded', String(isHidden));">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+
+                    <div id="settings-dropdown" class="settings-dropdown hidden" aria-label="Language switcher">
+                        <div class="lang-switcher">
+                            <button class="lang-btn" type="button" data-lang="ar">AR</button>
+                            <button class="lang-btn active" type="button" data-lang="en">EN</button>
+                        </div>
+
+                        <button class="settings-action-btn night-mode-btn" type="button" aria-pressed="false">
+                            <i class="fa-solid fa-moon"></i>
+                            <span data-i18n="primaryMode">Primary Mode</span>
+                        </button>
+                    </div>
+                </div>
+
+                <a class="header-cta" href="#contact-form-section" data-i18n="headerCta">Let's Talk</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- خلفية معتمة بتظهر ورا قائمة الموبايل (بتقفل القائمة بالضغط عليها) -->
+    <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+
+    <!-- ====================================================================
+         نافذة مواقع التواصل (Social Links Popup)
+         --------------------------------------------------------------------
+         بتفتح بالضغط على زر .btn-socials اللي جنب «تحميل السيرة الذاتية»
+         في الهيرو. النافذة صغيرة ومش بتغطي الصفحة كلها.
+
+         الروابط دي هي **نفس** الروابط المستخدمة في الفوتر بالظبط
+         (مفيش أي لينك جديد أو مختلف) — عشان ما يبقاش فيه تناقض.
+
+         طرق الغلق: زر × / الضغط على الخلفية / مفتاح Escape.
+         الكود في script.js قسم 17.
+         ==================================================================== -->
+    <div class="socials-modal hidden" id="socials-modal" aria-hidden="true">
+        <div class="socials-modal-content" role="dialog" aria-modal="true" aria-labelledby="socials-modal-title">
+            <button class="socials-close" type="button" aria-label="Close">×</button>
+
+            <h3 id="socials-modal-title" data-i18n="socialsTitle">Social Links</h3>
+            <p class="socials-subtitle" data-i18n="socialsSubtitle">Find me on these platforms — always happy to connect.</p>
+
+            <div class="socials-grid">
+                <a class="social-tile github" href="https://github.com/moatazsmohamed" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+
+                <a class="social-tile linkedin" href="https://www.linkedin.com/in/moataz-mohamed-342b32399?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_ios" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                    <span>LinkedIn</span>
+                </a>
+
+                <a class="social-tile facebook" href="https://www.facebook.com/share/1Dj97JqdS8/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </a>
+
+                <a class="social-tile instagram" href="https://www.instagram.com/moataz_____mohamed?stkn=OHd1ZWlhbnJqNzMz&amp;utm_source=qr" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ====================================================================
+         قسم الهيرو (Hero) — أول حاجة يشوفها الزائر
+         --------------------------------------------------------------------
+         مبني من جزئين:
+
+         1) .hero-top-row → صف فيه:
+              • .hero-text-content  → نص الترحيب + العنوان + الوصف + 3 أزرار
+              • .hero-image-wrapper → صورة الشخص
+         2) .hero-visual-card → كارت زجاجي تحيهم فيه:
+              • تاج "طالب IT"
+              • عنوان "تحويل الأفكار..." + وصف
+              • شبكة المهارات الأربعة
+              • حكمة في الآخر
+         الرابط #home هو اللي بيتفتح أول حاجة (من script.js - قسم 14)،
+         ولينك "الرئيسية" في الشريط بيودي له.
+
+         data-reveal → كلاس أنيميشن الظهور عند النزول
+                       (شوف script.js قسم 15.0 و 11.css قسم 12)
+                       القيم: up / right / zoom
+         ==================================================================== -->
+    <main class="hero-section" id="home">
+        <!-- زر العودة لأول الصفحة (بيظهر عند النزول) -->
+        <button type="button" class="backToTopBtn" id="backToTop"
+                aria-label="Back to top" title="Back to top">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+
+        <div class="hero-top-row">
+            <div class="hero-text-content" data-reveal="up">
+                <div class="welcome-pill">
+                    <span class="green-dot"></span>
+                    <span data-i18n="heroStatus">Open to internships &amp; junior roles</span>
+                </div>
+
+                <h1 class="main-title" data-i18n="heroTitle">
+                    My personal portfolio, CV, and software projects all in one place
+                </h1>
+
+                <p class="description" data-i18n="heroDescription">
+                    I'm an IT student passionate about programming, technology, and building things
+                     that make an impact. I'm constantly learning, improving my skills,
+                      and turning ideas into real projects.
+                </p>
+
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <strong class="hero-stat-value" id="heroStatProjects">08</strong>
+                        <span class="hero-stat-label" data-i18n="statProjectsLabel">Live projects</span>
+                    </div>
+
+                    <div class="hero-stat">
+                        <strong class="hero-stat-value">6+</strong>
+                        <span class="hero-stat-label" data-i18n="statTechLabel">Technologies in use</span>
+                    </div>
+
+                    <div class="hero-stat">
+                        <strong class="hero-stat-value" data-i18n="statLocationValue">Alexandria, EG</strong>
+                        <span class="hero-stat-label" data-i18n="statLocationLabel">Based in</span>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="#portfolio" class="btn btn-primary" data-i18n="viewWork">
+                        View Work <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="#contact" class="btn btn-secondary" data-i18n="letsTalk">
+                        Let's Talk
+                    </a>
+
+                    <a href="img/Moataz_Mohamed_CV_Clean.pdf" class="btn btn-tertiary" data-i18n="downloadCv" download>
+                        Download CV <i class="fa-solid fa-download"></i>
+                    </a>
+
+                    <!-- زر صغير مدوّر: بيفتح نافذة مواقع التواصل -->
+                    <button type="button" class="btn-socials" id="socials-toggle"
+                            title="Social Links"
+                            aria-label="Open social links" aria-haspopup="dialog">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="hero-image-wrapper" data-reveal="right">
+                <div class="cyber-glow"></div>
+                <img src="img/hero-moataz.webp" alt="Moataz Mohamed" class="hero-standalone-img" width="1200" height="800" decoding="async" fetchpriority="high">
+            </div>
+        </div>
+
+        <div class="hero-visual-card" data-reveal="zoom">
+            <div class="card-glow"></div>
+
+            <div class="card-inner">
+                <div class="card-header">
+                    <div class="laptop-icon">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+
+                    <div class="badge-status">
+                        <i class="fa-solid fa-code-commit"></i>
+                        <span data-i18n="itStudent">IT Student</span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <h2 data-i18n="turnIdeas">Turning Ideas Into Real Projects</h2>
+                    <p class="card-text" data-i18n="cardText">
+                        Learning today, leading tomorrow. Focused on software development, web applications, and database engineering.
+                    </p>
+
+                    <div class="skills-grid">
+                        <div class="skill-box">
+                            <i class="fa-solid fa-code"></i>
+                            <div>
+                                <h4 data-i18n="programming">Programming</h4>
+                                <span data-i18n="cleanScalable">Clean & Scalable</span>
+                            </div>
+                        </div>
+
+                        <div class="skill-box">
+                            <i class="fa-solid fa-globe"></i>
+                            <div>
+                                <h4 data-i18n="webDev">Web Dev</h4>
+                                <span data-i18n="responsiveApps">Responsive Apps</span>
+                            </div>
+                        </div>
+
+                        <div class="skill-box">
+                            <i class="fa-solid fa-database"></i>
+                            <div>
+                                <h4 data-i18n="databases">Databases</h4>
+                                <span data-i18n="sqlSystems">SQL & Systems</span>
+                            </div>
+                        </div>
+
+                        <div class="skill-box">
+                            <i class="fa-solid fa-network-wired"></i>
+                            <div>
+                                <h4 data-i18n="itDepartment">IT Department</h4>
+                                <span data-i18n="networksLogic">Networks & Logic</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer-motto">
+                        <i class="fa-solid fa-quote-left"></i>
+                        <span data-i18n="keepLearning">Keep Learning, Keep Growing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ====================================================================
+         شريط الأرقام (Numbers) — عدادات حقيقية
+         --------------------------------------------------------------------
+         الزيارات والزوار بيتسجلوا مجهولين على Supabase: مفيش IP ولا كوكيز
+         ولا بيانات شخصية، بس معرّف عشوائي بيتخزن في المتصفح.
+         العملاء رقم ثابت (SITE_CLIENT_COUNT في script.js) والمشاريع
+         بتتحسب أوتوماتيك من projectData.
+         ==================================================================== -->
+    <section class="numbers-section" id="numbers" aria-labelledby="numbersTitle">
+        <div class="numbers-panel" data-reveal="up">
+            <div class="numbers-head">
+                <p class="section-kicker" data-i18n="numbersKicker">Site activity</p>
+                <h2 class="section-title numbers-title" id="numbersTitle" data-i18n="numbersTitle">Always in motion</h2>
+            </div>
+
+            <div class="numbers-grid">
+                <div class="number-card">
+                    <span class="number-icon" aria-hidden="true"><i class="fa-solid fa-eye"></i></span>
+                    <strong class="number-value" id="siteVisits">—</strong>
+                    <span class="number-label" data-i18n="numberVisits">Site visits</span>
+                </div>
+
+                <div class="number-card">
+                    <span class="number-icon" aria-hidden="true"><i class="fa-solid fa-user-group"></i></span>
+                    <strong class="number-value" id="siteVisitors">—</strong>
+                    <span class="number-label" data-i18n="numberVisitors">Visitors</span>
+                </div>
+
+                <div class="number-card">
+                    <span class="number-icon" aria-hidden="true"><i class="fa-solid fa-handshake"></i></span>
+                    <strong class="number-value" id="siteClients">6+</strong>
+                    <span class="number-label" data-i18n="numberClients">Clients</span>
+                </div>
+
+                <div class="number-card">
+                    <span class="number-icon" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span>
+                    <strong class="number-value" id="siteProjects">8+</strong>
+                    <span class="number-label" data-i18n="numberProjects">Live projects</span>
+                </div>
+            </div>
+
+            <p class="numbers-note" data-i18n="numbersNote">
+                Counters that keep moving — a quick snapshot of site activity.
+            </p>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         قسم من أنا (About Me) — بطاقات التعليم والتطوير والأهداف والشهادات
+         ==================================================================== -->
+    <section class="about-section" id="about">
+        <h2 class="section-title" data-i18n="aboutTitle" data-reveal="up">About Me & Tech Stack & Languages</h2>
+
+
+
+
+    <!-- ====================================================================
+         شريط التقنيات (Tech Slider)
+         --------------------------------------------------------------------
+         سلايدر أفقي فيه 8 كروت، 4 بس بيظهروا في الشاشة.
+         للتنقل: زر السهم الأيسر (prev) أو الأيمن (next).
+
+         ⚠️ ملاحظة مهمة للتيم: ظهور 4 كروت بس ده **مقصود** مش عيب —
+         عرض السلايدر (max 900px) أصغر من مجموع الكروت (‏~1267px)،
+         والكروت الباقية بتظهر لما تدوس على الأسهم.
+         وفي 11.css في "قناع تلاشي" على الأطراف بيفهمك إن في كروت زيادة.
+
+         ─ كيف تضيف تقنية جديدة؟ ─
+         انسخ أي .tech-card-slim وغيّر:
+           • src  → مسار اللوجو (من devicon أو أي مكان)
+           • alt  → وصف الصورة (مهم للـ SEO وإمكانية الوصول)
+           • الاسم جوه .tech-name
+         مش محتاج تعدل JS — السلايدر بيقرا الكروت من الصفحة مباشرة.
+
+         النصوص هنا مفيهاش data-i18n لأن أسماء التقنيات أعلام (نفس الشكل في اللغتين).
+         ==================================================================== -->
+
+
+  <div class="slider-wrapper">
+    <!-- زر التنقل يساراً -->
+    <button class="slider-btn prev-btn" id="techPrevBtn" aria-label="Previous Technologies">
+      &#10094;
+    </button>
+
+    <!-- حاوية البطاقات -->
+    <div class="tech-slider-container" id="techSlider">
+
+      <div class="tech-card-slim">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5 Logo" class="tech-logo">
+        <span class="tech-name">HTML5</span>
+      </div>
+
+      <div class="tech-card-slim">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3 Logo" class="tech-logo">
+        <span class="tech-name">CSS3</span>
+      </div>
+
+      <div class="tech-card-slim">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript Logo" class="tech-logo">
+        <span class="tech-name">JavaScript</span>
+      </div>
+
+      <div class="tech-card-slim">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C Programming Logo" class="tech-logo">
+        <span class="tech-name">C Language</span>
+      </div>
+
+      <div class="tech-card-slim">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js Logo" class="tech-logo">
+        <span class="tech-name">Node.js</span>
+      </div>
+
+      <div class="tech-card-slim">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git Logo" class="tech-logo">
+        <span class="tech-name">Git</span>
+      </div>
+
+      <div class="tech-card-slim">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Logo" class="tech-logo">
+        <span class="tech-name">GitHub</span>
+      </div>
+
+      <div class="tech-card-slim">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code Logo" class="tech-logo">
+        <span class="tech-name">VS Code</span>
+      </div>
+
+    </div>
+
+    <!-- زر التنقل يميناً -->
+    <button class="slider-btn next-btn" id="techNextBtn" aria-label="Next Technologies">
+      &#10095;
+    </button>
+  </div>
+
+        <div class="about-grid">
+            <div class="about-card" data-reveal="zoom">
+                <i class="fa-solid fa-user-graduate icon"></i>
+                <h3 data-i18n="education">Education</h3>
+                <p data-i18n="educationText">IT Student building a strong foundation in Computer Science, Systems, and Software Architecture.</p>
+            </div>
+
+            <div class="about-card reveal-delay-1" data-reveal="zoom">
+                <i class="fa-solid fa-code-merge icon"></i>
+                <h3 data-i18n="development">Development</h3>
+                <p data-i18n="developmentText">Creating clean, responsive, and robust applications using modern programming web tech.</p>
+            </div>
+
+            <div class="about-card reveal-delay-2" data-reveal="zoom">
+                <i class="fa-solid fa-bullseye icon"></i>
+                <h3 data-i18n="goals">Goals</h3>
+                <p data-i18n="goalsText">Continuously learning to solve complex problems and deliver high-quality digital solutions.</p>
+            </div>
+
+            <div class="about-card certificates-card reveal-delay-3" data-reveal="zoom">
+                <i class="fa-solid fa-award icon"></i>
+                <h3 data-i18n="certificates">Certificates</h3>
+                <p data-i18n="certificatesText">My professional certificates and course completions.</p>
+
+                <div class="certificate-controls">
+                    <button class="scroll-btn scroll-left" type="button" aria-label="Scroll certificates left">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <button class="scroll-btn scroll-right" type="button" aria-label="Scroll certificates right">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+    <!-- ====================================================================
+         كروت الشهادات (Certificates)
+         --------------------------------------------------------------------
+         كل شهادة عبارة عن .certificate-item وبتتكون من:
+           .certificate-number      → رقم الشهادة (01 / 02 / ...).
+           .certificate-icon        → أيقونة النوع (HTML / CSS / JS ...)
+           .certificate-thumb       → صورة الشهادة
+           .certificate-text        → الاسم و".completed" السنة
+           .certificate-actions     → زر "عرض" وزر "تحميل"
+           .certificate-note        → وصف صغير (اختياري)
+           .certificate-meta        → الجهة والمكان (اختياري)
+
+         ─ كيف تضيف شهادة جديدة؟ ─
+         انسخ أي .certificate-item كاملة وعدّل:
+           • img src / href  → مسار الصورة (نفسه في العرض والتحميل)
+           • أيقونة fa-brands / fa-solid
+           • الرقم في .certificate-number
+           • النصوص (وافتكر تضيف مفاتيحها في script.js قسم 1 في ar و en)
+
+         ⚠️ الصور هنا عليها loading="lazy" — يعني مش بتتحمّل غير لما
+         الزائر ينزل عندها. ده بيخلي أول تحميل للصفحة أسرع بكتير.
+         (صورة الهيرو العكس — عليها fetchpriority="high" عشان تبان فورًا)
+
+         أسهم التمرير (.scroll-btn) بتزحزح القايمة — الكود في القسم 13
+         من script.js.
+         ==================================================================== -->
+                <div class="certificates-list">
+                    <div class="certificate-item">
+                        <div class="certificate-number">01</div>
+                        <div class="certificate-top">
+                            <div class="certificate-icon">
+                                <i class="fa-brands fa-html5"></i>
+                            </div>
+                        </div>
+                        <div class="certificate-thumb">
+                            <img src="img/certificate-html.webp" alt="Certificate 1" width="1600" height="1131" loading="lazy" decoding="async">
+                        </div>
+                        <div class="certificate-text">
+                            <h4 data-i18n="html">HTML</h4>
+                            <span data-i18n="completed2026">Completed in 2026</span>
+                        </div>
+                        <div class="certificate-actions">
+                            <a class="certificate-btn view" href="img/certificate-html.webp" target="_blank" rel="noopener noreferrer" data-i18n="viewLabel">View</a>
+                            <a class="certificate-btn download" href="img/certificate-html.webp" download data-i18n="downloadLabel">Download</a>
+                        </div>
+                        <p class="certificate-note" data-i18n="htmlNote">This certificate reflects the importance of learning the foundations of web development and building a strong base in HTML.</p>
+                    </div>
+
+                    <div class="certificate-item">
+                        <div class="certificate-number">02</div>
+                        <div class="certificate-top">
+                            <div class="certificate-icon">
+                                <i class="fa-brands fa-css3-alt"></i>
+                            </div>
+                        </div>
+                        <div class="certificate-thumb">
+                            <img src="img/certificate-css.webp" alt="Certificate 2" width="1600" height="1131" loading="lazy" decoding="async">
+                        </div>
+                        <div class="certificate-text">
+                            <h4 data-i18n="css">CSS</h4>
+                            <span data-i18n="completed2025">Completed in 2025</span>
+                        </div>
+                        <div class="certificate-actions">
+                            <a class="certificate-btn view" href="img/certificate-css.webp" target="_blank" rel="noopener noreferrer" data-i18n="viewLabel">View</a>
+                            <a class="certificate-btn download" href="img/certificate-css.webp" download data-i18n="downloadLabel">Download</a>
+                        </div>
+                        <p class="certificate-note" data-i18n="cssNote">This certificate reflects the importance of mastering design, layout, responsiveness, and visual styling in modern web development.</p>
+                    </div>
+
+                    <div class="certificate-item">
+                        <div class="certificate-number">03</div>
+                        <div class="certificate-top">
+                            <div class="certificate-icon">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                        </div>
+                        <div class="certificate-thumb">
+                            <img src="img/certificate-brand-event.webp" alt="Before Brand Event Certificate" width="1241" height="877" loading="lazy" decoding="async">
+                        </div>
+                        <div class="certificate-text">
+                            <h4 data-i18n="beforeBrandTitle">Before Brand Event</h4>
+                            <span data-i18n="beforeBrandDate">August 27, 2026</span>
+                        </div>
+                        <div class="certificate-actions">
+                            <a class="certificate-btn view" href="img/certificate-brand-event.webp" target="_blank" rel="noopener noreferrer" data-i18n="viewLabel">View</a>
+                            <a class="certificate-btn download" href="img/certificate-brand-event.webp" download data-i18n="downloadLabel">Download</a>
+                        </div>
+                        <div class="certificate-meta">
+                            <p><strong data-i18n="issuerLabel">Issuer:</strong> <span data-i18n="beforeBrandIssuer">Arabian Academy & Before Brand Team</span></p>
+                            <p><strong data-i18n="locationLabel">Location:</strong> <span data-i18n="beforeBrandLocation">Alexandria, Egypt</span></p>
+                        </div>
+                    </div>
+
+                    <div class="certificate-item certificate-placeholder">
+                        <div class="certificate-number">04</div>
+                        <div class="certificate-top">
+                            <div class="certificate-icon">
+                                <i class="fa-brands fa-js"></i>
+                            </div>
+                        </div>
+                        <div class="certificate-thumb">
+                            <img src="img/certificate-4.webp" alt="Certificate 4" width="1600" height="1131" loading="lazy" decoding="async">
+                        </div>
+                        <div class="certificate-text">
+                            <h4 data-i18n="java">JavaScript</h4>
+                            <span data-i18n="completed2025">Completed in 2025</span>
+                        </div>
+                        <div class="certificate-actions">
+                            <a class="certificate-btn view" href="img/certificate-4.webp" target="_blank" rel="noopener noreferrer" data-i18n="viewLabel">View</a>
+                            <a class="certificate-btn download" href="img/certificate-4.webp" download data-i18n="downloadLabel">Download</a>
+                        </div>
+                        <p class="certificate-note" data-i18n="javascriptnote">Completed an introductory JavaScript course covering dynamic scripting, DOM manipulation, event handling, and core programming logic.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         قسم النبذة المهنية (Professional Summary)
+         --------------------------------------------------------------------
+         ليه قسم منفصل ومش جوه «من أنا»؟
+           عشان ما يتكررش نفس الكلام: «من أنا» فوق بتشرح مين أنا والتعليم
+           والتطوير والأهداف. والقسم ده مختلف — بيقول أنا بكمل إيه بالظبط
+           (الهدف الوظيفي: تدريب / وظيفة مبتدئة) وبيجمّع التخصص والخلفية
+           في بلوك واحد مختصر.
+
+         ومكانه هنا قبل المشاريع عشان الزائر يعرف «إيه اللي بيدور عليه»
+         قبل ما يتفرج على الشغل نفسه.
+         ==================================================================== -->
+    <section class="summary-section" id="summary">
+        <div class="summary-card" data-reveal="up">
+            <div class="summary-icon">
+                <i class="fa-solid fa-user-tie"></i>
+            </div>
+
+            <div class="summary-body">
+                <h2 class="summary-title" data-i18n="summaryTitle">Professional Summary</h2>
+                <p class="summary-text" data-i18n="summaryText">
+                    Frontend Developer and IT student at Borg El Arab Technological University, with a diverse professional background spanning both management and technical work.
+                </p>
+                <p class="summary-goal">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <span data-i18n="summaryGoal">Seeking an internship or an entry-level position as a Frontend Developer.</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section" id="portfolio">
+        <div class="portfolio-header" data-reveal="up">
+            <p class="section-kicker" data-i18n="portfolioKicker">Featured Project</p>
+            <h2 class="section-title" data-i18n="portfolioTitle">Projects</h2>
+        </div>
+
+        <div class="project-card" data-reveal="zoom" tabindex="0" role="group"
+             aria-roledescription="carousel" aria-label="Projects">
+            <button type="button" class="project-nav-btn prev" aria-label="Previous project">
+                <i class="fa-solid fa-arrow-left project-arrow"></i>
+            </button>
+            <button type="button" class="project-nav-btn next" aria-label="Next project">
+                <i class="fa-solid fa-arrow-right project-arrow"></i>
+            </button>
+
+            <div class="project-info">
+                <div class="project-meta">
+                    <span class="project-tag" data-i18n="projectTag">Latest Project</span>
+                    <span class="project-index" id="projectIndex" aria-hidden="true">01 / 04</span>
+                </div>
+
+                <h3 data-i18n="projectName" aria-live="polite">Madar — Team Management</h3>
+                <p data-i18n="projectDescription">
+                    A multi-tenant cloud platform for team operations: daily tasks with timers, departments and permissions, monthly reports, and a developer panel — with a fully Arabic interface.
+                </p>
+
+                <ul class="project-tech" id="projectTech" aria-label="Technologies used"></ul>
+
+                <div class="project-actions">
+                    <a href="https://madar-three-liart.vercel.app/login" target="_blank" rel="noopener noreferrer" class="project-btn primary" data-i18n="viewProject">View Project</a>
+                    <a href="https://github.com/moatazsmohamed/madar" target="_blank" rel="noopener noreferrer" class="project-btn secondary" data-i18n="githubProject">GitHub</a>
+                    <button type="button" class="project-btn change" data-i18n="changeProject">Change Project</button>
+                </div>
+
+                <div class="project-dots" id="projectDots" role="group" aria-label="Choose a project"></div>
+            </div>
+
+            <div class="project-preview" aria-label="Project preview">
+                <div class="preview-window has-image">
+                    <img class="project-preview-image" src="img/madar-login.webp" alt="Madar login page preview" width="1600" height="833" loading="lazy" decoding="async">
+
+                    <div class="preview-body">
+                        <div class="preview-sidebar"></div>
+                        <div class="preview-content">
+                            <div class="preview-line short"></div>
+                            <div class="preview-line medium"></div>
+                            <div class="preview-line long"></div>
+                            <div class="preview-cards">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- دراسة حالة مختصرة: مدار -->
+        <div class="case-study" data-reveal="up">
+            <div class="case-head">
+                <p class="section-kicker" data-i18n="caseKicker">Case Study</p>
+                <h3 class="case-title" data-i18n="caseTitle">Madar — from an idea to a running product</h3>
+                <p class="case-lead" data-i18n="caseIntro">
+                    A multi-tenant team-operations platform that started as a real workflow problem and ended up as a working product used every day.
+                </p>
+            </div>
+
+            <div class="case-grid">
+                <div class="case-item">
+                    <span class="case-label" data-i18n="caseProblemLabel">The problem</span>
+                    <p data-i18n="caseProblemText">
+                        Teams split across departments needed one place for daily tasks, permissions and monthly reporting instead of scattered sheets.
+                    </p>
+                </div>
+
+                <div class="case-item">
+                    <span class="case-label" data-i18n="caseBuiltLabel">What I built</span>
+                    <p data-i18n="caseBuiltText">
+                        A multi-company platform: timed daily tasks, departments and roles, monthly reports, a developer console, and a full Arabic RTL interface.
+                    </p>
+                </div>
+
+                <div class="case-item">
+                    <span class="case-label" data-i18n="caseRoleLabel">My role</span>
+                    <p data-i18n="caseRoleText">
+                        End-to-end: database schema and permissions, the API layer, the client experience, and the deployment.
+                    </p>
+                </div>
+            </div>
+
+            <div class="case-foot">
+                <ul class="case-tags" aria-label="Technologies used" data-i18n-aria-label="caseTagsLabel">
+                    <li>React Native</li>
+                    <li>TypeScript</li>
+                    <li>Supabase</li>
+                    <li>PostgreSQL</li>
+                </ul>
+
+                <a class="case-link" href="https://madar-three-liart.vercel.app/login" target="_blank" rel="noopener noreferrer" data-i18n="caseOpen">
+                    Open Madar <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+        </div>
+        </section>
+
+    <!-- ====================================================================
+         قسم الخبرات المهنية (Professional Experience)
+         --------------------------------------------------------------------
+         الترتيب الزمني: الأحدث فوق (.is-latest) وباقي الخبرات بعده.
+         لو عايز تضيف خبرة جديدة:
+           1) انسخ أي .timeline-item كاملة
+           2) عدّل الأيقونة والأدوار والنصوص
+           3) ضيف مفاتيح الترجمة في script.js (قسم 1) في ar و en
+
+         النبذة المهنية (Professional Summary) بقت قسم لوحدها فوق عند
+         #summary — عشان ما تتكررش هنا.
+
+         data-reveal="up" → أنيميشن الظهور عند النزول (script.js قسم 15.0)
+         ==================================================================== -->
+    <section class="experience-section" id="experience">
+        <div class="section-head" data-reveal="up">
+            <p class="section-kicker" data-i18n="experienceKicker">Career Path</p>
+            <h2 class="section-title" data-i18n="experienceTitle">Professional Experience</h2>
+            <p class="section-lead" data-i18n="experienceText">
+                Hands-on experience across digital platform management, operational leadership, and precise technical work.
+            </p>
+        </div>
+
+        <!-- الخط الزمني للخبرات -->
+        <ol class="timeline">
+            <li class="timeline-item is-latest" data-reveal="up">
+                <div class="timeline-marker">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+
+                <div class="timeline-card">
+                    <div class="timeline-top">
+                        <h3 data-i18n="expModeratorRole">Online Moderator &amp; Content Specialist</h3>
+                        <span class="timeline-badge" data-i18n="expCurrent">Most Recent</span>
+                    </div>
+
+                    <p class="timeline-company">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span data-i18n="expModeratorCompany">Remote</span>
+                    </p>
+
+                    <p class="timeline-text" data-i18n="expModeratorText">
+                        Managing digital platforms and community engagement, and producing educational and technical content using AI tools.
+                    </p>
+                </div>
+            </li>
+
+            <li class="timeline-item" data-reveal="up">
+                <div class="timeline-marker">
+                    <i class="fa-solid fa-store"></i>
+                </div>
+
+                <div class="timeline-card">
+                    <div class="timeline-top">
+                        <h3 data-i18n="expManagerRole">Branch Manager / Operational Lead</h3>
+                    </div>
+
+                    <p class="timeline-company">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span data-i18n="expManagerCompany">Operations &amp; Management</span>
+                    </p>
+
+                    <p class="timeline-text" data-i18n="expManagerText">
+                        Running daily operations and branch workflow, and leading the team to meet sales and service standards.
+                    </p>
+                </div>
+            </li>
+
+            <li class="timeline-item" data-reveal="up">
+                <div class="timeline-marker">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+
+                <div class="timeline-card">
+                    <div class="timeline-top">
+                        <h3 data-i18n="expWarehouseRole">Warehouse Operations Assistant</h3>
+                    </div>
+
+                    <p class="timeline-company">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span data-i18n="expWarehouseCompany">Operations &amp; Logistics</span>
+                    </p>
+
+                    <p class="timeline-text" data-i18n="expWarehouseText">
+                        Overseeing inventory tracking, organising distribution, and keeping accurate operational records.
+                    </p>
+                </div>
+            </li>
+        </ol>
+    </section>
+
+    <!-- ====================================================================
+         قسم المهارات (Skills)
+         --------------------------------------------------------------------
+         أربع مجموعات: تطوير الويب / البرمجة والأساسيات /
+         أدوات المطور والذكاء الاصطناعي / المهارات الشخصية.
+
+         كل مجموعة .skills-group وكل مهارة جواها .skill-pill.
+         أسماء التقنيات (HTML5, Git, ESP32...) مفيهاش data-i18n لأنها أعلام
+         بنفس الشكل في اللغتين — نفس القاعدة المتبعة في شريط التقنيات فوق.
+         أما عناوين المجموعات والمهارات الشخصية فمترجمة عادي.
+
+         عايز تضيف مهارة؟ انسخ أي .skill-pill وغيّر النص بس.
+         ==================================================================== -->
+    <section class="skills-section" id="skills">
+        <div class="section-head" data-reveal="up">
+            <p class="section-kicker" data-i18n="skillsKicker">Capabilities</p>
+            <h2 class="section-title" data-i18n="skillsTitle">Skills</h2>
+            <p class="section-lead" data-i18n="skillsText">
+                The tools and technologies I work with across frontend development, programming, and supporting tooling.
+            </p>
+        </div>
+
+        <div class="skills-grid-4">
+            <div class="skills-group" data-reveal="up">
+                <div class="skills-group-head">
+                    <i class="fa-solid fa-code"></i>
+                    <h3 data-i18n="skillsWebDev">Web Development</h3>
+                </div>
+
+                <ul class="skills-list">
+                    <li class="skill-pill">HTML5</li>
+                    <li class="skill-pill">CSS3</li>
+                    <li class="skill-pill">JavaScript (ES6+)</li>
+                    <li class="skill-pill" data-i18n="responsiveApps">Responsive Apps</li>
+                </ul>
+            </div>
+
+            <div class="skills-group reveal-delay-1" data-reveal="up">
+                <div class="skills-group-head">
+                    <i class="fa-solid fa-microchip"></i>
+                    <h3 data-i18n="skillsProgramming">Programming &amp; Core</h3>
+                </div>
+
+                <ul class="skills-list">
+                    <li class="skill-pill">C Programming</li>
+                    <li class="skill-pill">Data Logic</li>
+                    <li class="skill-pill">Arduino Nano</li>
+                    <li class="skill-pill">ESP32</li>
+                </ul>
+            </div>
+
+            <div class="skills-group reveal-delay-2" data-reveal="up">
+                <div class="skills-group-head">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <h3 data-i18n="skillsTools">Developer Tools &amp; AI</h3>
+                </div>
+
+                <ul class="skills-list">
+                    <li class="skill-pill">Git</li>
+                    <li class="skill-pill">GitHub</li>
+                    <li class="skill-pill">VS Code</li>
+                    <li class="skill-pill">Canva</li>
+                    <li class="skill-pill">Prompt Engineering</li>
+                    <li class="skill-pill">NotebookLM</li>
+                    <li class="skill-pill">ChatGPT</li>
+                    <li class="skill-pill">Blackbox AI</li>
+                </ul>
+            </div>
+
+            <div class="skills-group reveal-delay-3" data-reveal="up">
+                <div class="skills-group-head">
+                    <i class="fa-solid fa-people-group"></i>
+                    <h3 data-i18n="skillsSoft">Soft Skills</h3>
+                </div>
+
+                <ul class="skills-list">
+                    <li class="skill-pill" data-i18n="softSelfMotivated">Self-Motivated</li>
+                    <li class="skill-pill" data-i18n="softLeadership">Leadership</li>
+                    <li class="skill-pill" data-i18n="softTeamManagement">Team Management</li>
+                    <li class="skill-pill" data-i18n="softProblemSolving">Problem Solving</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         قسم الدورات والدراسة (Courses & Education)
+         --------------------------------------------------------------------
+         ⚠️ مهم: القسم ده **مش** تكرار لقسم الشهادات (Certificates) اللي
+         جوه «من أنا»: الشهادات هناك ملفات صور (شهادة HTML/CSS/JS والأيفنت)
+         بأزرار عرض وتحميل. أما هنا فدي «مسارات الدراسة والدورات»
+         بدون صور — عشان ما يحصلش تكرار في المحتوى ولا في الشكل.
+
+         كل دورة .course-card: أيقونة + عنوان + سطر تفاصيل + وصف + حالة.
+         ==================================================================== -->
+    <section class="courses-section" id="courses">
+        <div class="section-head" data-reveal="up">
+            <p class="section-kicker" data-i18n="coursesKicker">Continuous Learning</p>
+            <h2 class="section-title" data-i18n="coursesTitle">Courses &amp; Education</h2>
+            <p class="section-lead" data-i18n="coursesText">
+                The learning tracks and courses that build my technical foundation.
+            </p>
+        </div>
+
+        <div class="courses-grid">
+            <article class="course-card" data-reveal="up">
+                <div class="course-icon">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+
+                <h3 data-i18n="courseFrontendTitle">Frontend Web Development Coursework</h3>
+                <p class="course-meta">HTML5 · CSS3 · JavaScript</p>
+                <p class="course-text" data-i18n="courseFrontendText">
+                    Web development tracks covering semantic structure, styling, responsive layout, and JavaScript programming logic.
+                </p>
+                <span class="course-status" data-i18n="completed2026">Completed in 2026</span>
+            </article>
+
+            <article class="course-card reveal-delay-1" data-reveal="up">
+                <div class="course-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <h3 data-i18n="courseCiscoTitle">Cisco Networking &amp; Cybersecurity Basics</h3>
+                <p class="course-meta">Networking · Cybersecurity</p>
+                <p class="course-text" data-i18n="courseCiscoText">
+                    Foundational studies in networking, information security, and system protection concepts.
+                </p>
+                <span class="course-status" data-i18n="completed2025">Completed in 2025</span>
+            </article>
+
+            <article class="course-card reveal-delay-2" data-reveal="up">
+                <div class="course-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+
+                <h3 data-i18n="courseUniversityTitle">Information Technology — Borg El Arab Technological University</h3>
+                <p class="course-meta" data-i18n="courseUniversityMeta">University Student</p>
+                <p class="course-text" data-i18n="courseUniversityText">
+                    Academic study in information technology covering computer science, systems, and databases.
+                </p>
+                <span class="course-status is-progress" data-i18n="coursesStatus">In Progress</span>
+            </article>
+        </div>
+    </section>
+
+
+        <!-- ====================================================================
+             شريط التواصل السريع (Contact Strip)
+             ==================================================================== -->
+        <section class="contact-strip-section" id="contact">
+        <div class="contact-strip" data-reveal="zoom">
+            <div class="contact-strip-text">
+                <p class="contact-strip-kicker" data-i18n="contactKicker">Let's Connect</p>
+                <h3 data-i18n="contactTitle">Need a project, collaboration, or just a quick chat?</h3>
+            </div>
+            <a href="https://wa.me/201280090726" target="_blank" rel="noopener noreferrer" class="contact-strip-btn" data-i18n="contactButton">Contact Me</a>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         كارت رمز QR (QR Code Card)
+         --------------------------------------------------------------------
+         بيتولّد في المتصفح من ملف لينك الموقع نفسه (og:url) — يعني مفيش
+         صورة خارجية ولا سيرفر، والصفحة بتفضل شغالة أوفلاين.
+
+         المكتبة: qrcodejs من cdnjs (تعمل مرة واحدة لما الصفحة تفتح).
+         الكود بتاع التوليد في script.js (قسم QR).
+         ==================================================================== -->
+    <section class="qr-section">
+        <div class="qr-card" data-reveal="up">
+            <div class="qr-copy">
+                <p class="qr-kicker">
+                    <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
+                    <span data-i18n="qrKicker">Share it with friends</span>
+                </p>
+                <h3 class="qr-title" data-i18n="qrTitle">Invite your friends to see my work</h3>
+                <p class="qr-text" data-i18n="qrText">
+                    Scan the code from your phone, or hit Share and send the link on WhatsApp or any app — the whole site is ready.
+                </p>
+
+                <!-- أزرار المشاركة: مشاركة صورة الـ QR + نسخ اللينك + تنزيلها -->
+                <div class="qr-share-row">
+                    <button type="button" class="qr-share-btn" id="qrShareBtn">
+                        <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
+                        <span data-i18n="qrShare">Share site</span>
+                    </button>
+
+                    <button type="button" class="qr-copy-btn" id="qrCopyBtn">
+                        <i class="fa-regular fa-copy" aria-hidden="true"></i>
+                        <span data-i18n="qrCopy">Copy link</span>
+                    </button>
+
+                    <button type="button" class="qr-copy-btn" id="qrDownloadBtn">
+                        <i class="fa-solid fa-download" aria-hidden="true"></i>
+                        <span data-i18n="qrDownload">Save QR</span>
+                    </button>
+                </div>
+
+                <p class="qr-feedback" id="qrFeedback" role="status" aria-live="polite"></p>
+
+                <ul class="qr-links">
+                    <li><i class="fa-solid fa-code" aria-hidden="true"></i><span data-i18n="qrLinkProjects">Projects</span></li>
+                    <li><i class="fa-solid fa-user" aria-hidden="true"></i><span data-i18n="qrLinkAbout">About Me</span></li>
+                    <li><i class="fa-solid fa-file-lines" aria-hidden="true"></i><span data-i18n="qrLinkCv">CV</span></li>
+                    <li><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span data-i18n="qrLinkSkills">Skills</span></li>
+                </ul>
+            </div>
+
+            <!-- اللوحة: إطار معدني ذهبي + الكود + شريط اللينك -->
+            <div class="qr-frame">
+                <div class="qr-plate">
+                    <div class="qr-plate-head">
+                        <span class="qr-mark">M</span>
+                        <span class="qr-plate-divider" aria-hidden="true"></span>
+                        <span class="qr-plate-text">
+                            <strong data-i18n="qrPlateTitle">MY PORTFOLIO</strong>
+                            <small data-i18n="qrPlateSub">WEB DEVELOPER</small>
+                        </span>
+                    </div>
+
+                    <div class="qr-window">
+                        <div id="qr-code" class="qr-code" role="img"
+                             aria-label="QR code to open the portfolio"></div>
+                    </div>
+
+                    <p class="qr-caption">
+                        <i class="fa-solid fa-globe" aria-hidden="true"></i>
+                        <span data-i18n="qrCaption">portfolio-moataz.vercel.app</span>
+                    </p>
+                </div>
+
+                <p class="qr-scan">
+                    <span data-i18n="qrScan">Scan the code</span>
+                    <svg viewBox="0 0 48 30" aria-hidden="true" focusable="false">
+                        <path d="M4 4 C 20 4, 26 24, 44 26" fill="none" stroke="currentColor"
+                              stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M38 20 L45 27 L36 28" fill="none" stroke="currentColor"
+                              stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         نموذج التواصل (Contact Form)
+         --------------------------------------------------------------------
+         الإرسال عبر خدمة Formspree (action = رابط الفورم بتاعك).
+         مفيش أي كود سيرفر من ناحيتنا — الخدمة بتستقبل البيانات
+         وتبعتها على الإيميل المسجّل عندهم.
+
+         ⚠️ لو عايز تغير الإيميل اللي بتيجي عليه الرسايل:
+         ده بيتعمل من لوحة تحكم Formspree مش من الكود.
+
+         حقول النموذج:
+           name    → الاسم (مطلوب)
+           phone   → التليفون (اختياري)
+           _replyto → الإيميل (مطلوب)
+                      الـ _replyto ده اسم خاص بـ Formspree:
+                      بيعرفها إن ده عنوان الرد على الرسالة
+           message → نص الرسالة (مطلوب)
+
+         النصوص هنا مش مترجمة (data-i18n مش موجودة) — قسم إنجليزي بس.
+         ==================================================================== -->
+    <section class="contact-section" id="contact-form-section">
+        <div class="contact-container" data-reveal="up">
+            <div class="contact-header">
+                <h2>Let's Build Something Together</h2>
+                <p>Have a project in mind or want to chat? Fill out the form below and I'll get back to you.</p>
+            </div>
+
+            <form class="contact-form" action="https://formspree.io/f/xppzgnbo" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="_replyto" placeholder="Enter your email address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    Send Message <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+
+
+</section>
+
+    <!-- ====================================================================
+         الفوتر (Footer)
+         فيه أربع حاجات: بياناتي، طرق التواصل، مواقع التواصل الاجتماعي،
+         وسطر الحقوق تحت خالص
+         ==================================================================== -->
+    <footer class="footer-section" data-reveal="up">
+
+        <!-- الصف الأول: اسمي + جملة كرييتف على الشمال، وطرق التواصل على اليمين -->
+        <div class="footer-container">
+            <div class="footer-info">
+                <h3>ENG.Moataz Mohamed</h3>
+                <p class="footer-quote" data-i18n="footerQuote">Designed &amp; Developed with passion | صُمِّم وطُوِّر بكل شغف</p>
+            </div>
+
+            <div class="footer-contact">
+                <a href="mailto:mtzm2225@gmail.com" class="contact-item">
+                    <i class="fa-solid fa-envelope"></i> mtzm2225@gmail.com
+                </a>
+                <a href="tel:+201035712862" class="contact-item">
+                    <i class="fa-solid fa-phone"></i> +20 1035712862
+                </a>
+
+                <a href="https://wa.me/201280090726" target="_blank" rel="noopener noreferrer" class="contact-item whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <!-- ================================================================
+             قسم مواقع التواصل الاجتماعي
+             ده الجزء اللي بيبرز حساباتي بشكل واضح في نص الفوتر،
+             وكل لينك فيه اسم الموقع مكتوب جنب الأيقونة عشان يبان أوضح
+             ================================================================ -->
+        <div class="footer-social-section">
+            <p class="footer-social-title" data-i18n="footerSocialTitle">Let's stay connected</p>
+            <p class="footer-social-subtitle" data-i18n="footerSocialSubtitle">
+                Follow me on social media — I'm always happy to connect with new people.
+            </p>
+
+        <!-- ================================================================
+             أزرار مواقع التواصل — كل واحد بياخد كلاس بلونه الرسمي
+             (linkedin / facebook / instagram / github)
+             عشان الـ CSS يدي كل واحد درجة لونه. الأسماء واللينكات ثابتة
+             (مش مترجمة) لأنها أعلام/أسماء ماركات.
+             ================================================================ -->
+            <div class="footer-socials">
+                <a href="https://www.linkedin.com/in/moataz-mohamed-342b32399?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_ios"
+                   target="_blank" rel="noopener noreferrer" class="social-link linkedin" title="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                    <span>LinkedIn</span>
+                </a>
+
+                <a href="https://www.facebook.com/share/1Dj97JqdS8/?mibextid=wwXIfr"
+                   target="_blank" rel="noopener noreferrer" class="social-link facebook" title="Facebook">
+                    <i class="fa-brands fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </a>
+
+                <a href="https://www.instagram.com/moataz_____mohamed?stkn=OHd1ZWlhbnJqNzMz&amp;utm_source=qr"
+                   target="_blank" rel="noopener noreferrer" class="social-link instagram" title="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+
+                <a href="https://github.com/moatazsmohamed"
+                   target="_blank" rel="noopener noreferrer" class="social-link github" title="GitHub">
+                    <i class="fa-brands fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ================================================================
+             آخر سطر: جملة كرييتف + الحقوق + التوقيع
+             ================================================================ -->
+        <div class="footer-bottom">
+            <p class="footer-credo" data-i18n="footerCredo">
+                Turning coffee into code, and ideas into reality.
+            </p>
+
+            <p class="footer-rights" data-i18n="allRightsReserved">© 2026 Moataz Mohamed. All rights reserved.</p>
+
+            <p class="footer-signature" data-i18n="footerSignature">
+                Handcrafted line by line with passion — from Alexandria, Egypt 🇪🇬
+            </p>
+        </div>
+    </footer>
+
+    <!-- ====================================================================
+         🤖 روبوت الموقع العائم — فيه زرار المساعد وزرار الواتساب
+         --------------------------------------------------------------------
+         الروبوت واقف في جنب الشاشة من تحت (زي أي Chatbot عادي)،
+         وده جواه الزرارين: زرار الواتساب وزرار المساعد الذكي.
+
+         إزاي بيشتغل؟
+           • عينيه بتتحرك ناحية الماوس (JS بيحدّث --eye-x / --eye-y)
+           • راسه بيتمايل شوية ناحية الماوس
+           • الهوائي بيهتزّ خفيف
+           • لما الماوس يقرب منه، بيبتسم ويضيء
+
+         ملاحظة: كله CSS + JS، من غير أي صورة أو ملف خارجي.
+         وعلى الموبايل (من غير ماوس) بيفضل واقف ثابت ومبتسم.
+         ==================================================================== -->
+    <div class="bot-fab-dock" id="botFabDock">
+        <div class="hero-bot" id="heroBot" role="button" tabindex="0"
+             aria-label="Say hello to the bot">
+            <!-- 💬 فقاعة الكلام: بتظهر لما المستخدم يضغط على الروبوت -->
+            <div class="bot-bubble" id="botBubble">
+                <p class="bot-bubble-text" data-i18n="botGreeting">أهلاً بيك! أنا روبوت الموقع 👋</p>
+                <span class="bot-bubble-tail" aria-hidden="true"></span>
+            </div>
+
+            <div class="bot-antenna">
+                <span class="bot-antenna-tip"></span>
+            </div>
+
+            <div class="bot-head">
+                <div class="bot-ear bot-ear-right"></div>
+                <div class="bot-ear bot-ear-left"></div>
+
+                <div class="bot-face">
+                    <div class="bot-eye bot-eye-right"></div>
+                    <div class="bot-eye bot-eye-left"></div>
+                    <div class="bot-mouth"></div>
+                </div>
+            </div>
+
+            <div class="bot-body">
+                <div class="bot-chest">
+                    <span class="bot-light"></span>
+                    <span class="bot-light"></span>
+                    <span class="bot-light"></span>
+                </div>
+            </div>
+
+            <!-- إيدين صغيرتين على الجنبين -->
+            <span class="bot-arm bot-arm-left"></span>
+            <span class="bot-arm bot-arm-right"></span>
+
+            <!-- أرجل -->
+            <span class="bot-leg bot-leg-left"></span>
+            <span class="bot-leg bot-leg-right"></span>
+
+            <!-- ================================================================
+                 🎛️ الأزرار جوّه الروبوت (على صدره): الواتساب + المساعد الذكي
+                 ================================================================ -->
+            <div class="bot-fab-buttons">
+                <!-- زر الواتساب: دايرة خضرا بتفتح محادثة مباشرة -->
+                <a href="https://wa.me/201280090726" id="whatsappToggle" class="whatsapp-fab"
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label="Chat on WhatsApp" title="WhatsApp">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+
+                <!-- زر المساعد: بيفتح ويقفل لوحة الشات -->
+                <button type="button" id="aiToggle" class="ai-fab"
+                        aria-label="Open AI assistant" aria-expanded="false" aria-controls="aiPanel">
+                    <i class="fa-solid fa-robot ai-fab-open"></i>
+                    <i class="fa-solid fa-xmark ai-fab-close"></i>
+                    <span class="ai-fab-dot" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- لوحة الشات: المساعد بيشتغل محليًا (بدون سيرفر) وبيجاوب من قاعدة معرفة داخل script.js -->
+    <div id="aiPanel" class="ai-panel hidden" role="dialog" aria-modal="false"
+         aria-labelledby="ai-panel-title">
+        <div class="ai-header">
+            <div class="ai-avatar">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+
+            <div class="ai-header-text">
+                <h3 id="ai-panel-title" data-i18n="aiTitle">M &amp; M AI Assistant</h3>
+                <p data-i18n="aiSubtitle">Ask me about Moataz, his projects, his skills, or anything on this site.</p>
+            </div>
+
+            <button type="button" class="ai-close" aria-label="Close AI assistant">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- أسئلة سريعة: بتتملي تلقائيًا من script.js حسب اللغة -->
+        <div id="aiSuggestions" class="ai-suggestions" role="group" aria-label="Suggested questions"></div>
+
+        <div class="ai-box">
+            <input type="text" id="userInput" class="ai-input" autocomplete="off"
+                   placeholder="Ask the AI assistant..." data-i18n-placeholder="aiPlaceholder" />
+
+            <button type="button" id="aiSendButton" class="ai-send-btn" aria-label="Send question">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+
+        <!-- مكان عرض الإجابة -->
+        <div id="aiResponse" class="response-box" role="status" aria-live="polite">
+            <span data-i18n="aiWaiting">The answer will appear here...</span>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         مكتبة توليد رمز QR (qrcodejs) — بتتحمّل من cdnjs مرة واحدة،
+         وscript.js بيستخدمها عشان يرسم الكود جوه #qr-code.
+         لازم تكون *قبل* script.js (هو اللي بيستدعيها).
+         ==================================================================== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+
+    <!-- ====================================================================
+         السبسكريبت الرئيسي (الوحيد)
+         defer = بيتنفّذ بعد ما الصفحة كلها تتحمّل — ده مهم عشان
+         الجافاسكربت بيلاقي كل العناصر موجودة وهو بيشتغل.
+         جواه فهرس كامل لللي بيعمله في أول الملف.
+         ==================================================================== -->
+    <script src="script.js" defer></script>
+
+</body>
+</html>
