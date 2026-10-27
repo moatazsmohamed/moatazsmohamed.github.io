@@ -1,25 +1,60 @@
 -- ============================================================================
 -- Portfolio inbox: رسائل فورم التواصل بتتخزن هنا، وأنت بتقرأها من admin.html
--- بحساب المطور بتاع مدار.
 --
--- الملف ده بيتشغّل مرة واحدة في Supabase → SQL Editor (نفس مشروع مدار).
+-- المشروع **مستقل** عن مدار: مفيش أي تبعيّة على قاعدته. اللي بيفتح الصندوق هو
+-- الإيميل المسجّل في portfolio.admins، وبيتقارن بالـ JWT بتاع جلسة الدخول.
 --
--- التصميم (نفس أسلوب sql/portfolio-metrics.sql بالظبط):
+-- الملف ده بيتشغّل مرة واحدة في Supabase → SQL Editor (مشروع البورتفوليو).
+--
+-- التصميم:
 --   • الجدول في schema اسمه portfolio، و PostgREST مكشوفش للـ anon/authenticated،
 --     فمستحيل حد يلمسه من الـ REST API أو الـ JS client مباشرة.
 --   • كل الوصول بيحصل من دوال عامة (public.*) شغالين بـ security definer:
 --       portfolio_submit_lead(...)  → عام، بيستخدمه الفورم.
---       portfolio_leads(...)        → حساب المطور بس (public.is_developer()).
---       portfolio_lead_status(...)  → حساب المطور بس.
---       portfolio_delete_lead(...)  → حساب المطور بس.
+--       portfolio_leads(...)        → إيميلات portfolio.admins بس.
+--       portfolio_lead_status(...)  → نفس الشرط.
+--       portfolio_delete_lead(...)  → نفس الشرط.
 --   • التحقق من البيانات حاصل مرتين: في الدالة وفي قيود العمود، فلو حد
 --     استدعى الدالة بإيدة غلط الجدول بيرفض برضه.
 --   • خانة الطُعم (honeypot): البوت بيملّها، فالسطر مابيتسجلش والدالة بترد
 --     نجاح عشان البوت مافهمش إن ده طُعم.
+--
+-- عايز تضيف حد تاني يفتح الصندوق؟
+--   insert into portfolio.admins (email) values ('someone@gmail.com');
 -- ============================================================================
 
 create schema if not exists portfolio;
 revoke all on schema portfolio from anon, authenticated;
+
+/* ---------- مين مسموحله يفتح الصندوق ---------- */
+create table if not exists portfolio.admins (
+    email      text primary key check (email = lower(btrim(email))),
+    added_at   timestamptz not null default now()
+);
+
+insert into portfolio.admins (email) values ('mtzm2225@gmail.com')
+on conflict (email) do nothing;
+
+create or replace function portfolio.is_admin() returns boolean
+language sql
+stable
+security definer
+set search_path = portfolio, public
+as $$
+    -- الـ email claim بيفضل موجود في الـ JWT، بس لو Supabase غيّرت الحمولات
+    -- برجوع لـ auth.users بنفس الـ uid بيخلّي الصندوق مقفول بس، مش متسدّ.
+    select exists (
+        select 1 from portfolio.admins a
+         where a.email = lower(coalesce(auth.jwt() ->> 'email', ''))
+            or (auth.uid() is not null and exists (
+                    select 1 from auth.users u
+                     where u.id = auth.uid() and lower(u.email) = a.email
+                ))
+    );
+$$;
+
+revoke all on function portfolio.is_admin() from public, anon, authenticated;
+grant execute on function portfolio.is_admin() to authenticated;
 
 create table if not exists portfolio.leads (
     id           uuid primary key default gen_random_uuid(),
@@ -77,8 +112,15 @@ begin
         raise exception 'LEAD_NAME_INVALID';
     end if;
 
-    if v_email !~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$' then
+    if char_length(v_email) < 3 or char_length(v_email) > 254
+       or v_email !~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$' then
         raise exception 'LEAD_EMAIL_INVALID';
+    end if;
+
+    -- لو الموبايل أطول من المسموح نرفضه هنا، مش نسيبه يوقع قيد العمود:
+    -- خطأ قيد العمود بيرجع نص الصف كامل (الإيميل والرسالة) في الرد.
+    if v_phone is not null and char_length(v_phone) > 40 then
+        raise exception 'LEAD_PHONE_INVALID';
     end if;
 
     if char_length(v_message) < 1 or char_length(v_message) > 4000 then
@@ -113,7 +155,7 @@ begin
 end;
 $$;
 
-/* ---------- القراءة: حساب المطور بس ---------- */
+/* ---------- القراءة: الإيميلات اللي في portfolio.admins بس ---------- */
 create or replace function portfolio.read(p_status text)
 returns jsonb
 language plpgsql
@@ -127,7 +169,7 @@ declare
     v_new    int;
     v_total  int;
 begin
-    if not public.is_developer() then
+    if not portfolio.is_admin() then
         raise exception 'LEAD_FORBIDDEN';
     end if;
 
@@ -155,7 +197,7 @@ declare
     -- لو p_note جاية null يبقى المستخدم ملامسش الملاحظة؛ الفاضي يعني امسحها.
     v_note   text := case when p_note is null then null else btrim(p_note) end;
 begin
-    if not public.is_developer() then
+    if not portfolio.is_admin() then
         raise exception 'LEAD_FORBIDDEN';
     end if;
 
@@ -185,7 +227,7 @@ security definer
 set search_path = portfolio, public
 as $$
 begin
-    if not public.is_developer() then
+    if not portfolio.is_admin() then
         raise exception 'LEAD_FORBIDDEN';
     end if;
 
@@ -233,26 +275,44 @@ security definer
 set search_path = portfolio, public
 as $$ select portfolio.remove(p_id); $$;
 
--- الأذنين: مفيش one size fits all — النشر عام، والباكي للمطور من جوه الدالة.
-revoke all on function public.portfolio_submit_lead(text, text, text, text, text, text, text) from public;
-revoke all on function public.portfolio_leads(text) from public;
-revoke all on function public.portfolio_lead_status(uuid, text, text) from public;
-revoke all on function public.portfolio_delete_lead(uuid) from public;
+-- الأذنين: مفيش one size fits all — النشر عام، والقراءة والحذف من جوه الدالة.
+-- الـ revoke لازم يكون بالاسم (public + anon + authenticated): Supabase بيعمل
+-- grant execute للأدوار دي بنفس الاسم على الدوال الجديدة، فـ "from public"
+-- لحاله مابيلغيش عنهم والدالة بتفضل قابلة للتنادى من anon.
+revoke all on function public.portfolio_submit_lead(text, text, text, text, text, text, text) from public, anon, authenticated;
+revoke all on function public.portfolio_leads(text) from public, anon, authenticated;
+revoke all on function public.portfolio_lead_status(uuid, text, text) from public, anon, authenticated;
+revoke all on function public.portfolio_delete_lead(uuid) from public, anon, authenticated;
 
 grant execute on function public.portfolio_submit_lead(text, text, text, text, text, text, text) to anon, authenticated;
 grant execute on function public.portfolio_leads(text) to authenticated;
 grant execute on function public.portfolio_lead_status(uuid, text, text) to authenticated;
 grant execute on function public.portfolio_delete_lead(uuid) to authenticated;
 
+-- الجداول نفسها: ماحدش يلمسها من الـ API، الدالات الـ definer بتاعتها بس.
+revoke all on table portfolio.leads from public, anon, authenticated;
+revoke all on table portfolio.admins from public, anon, authenticated;
+
 -- يخلي PostgREST يعيد قراءة الـ schema من غير ما تستنى دقيقة.
 notify pgrst, 'reload schema';
 
--- فحص سريع: آخر نتيجة في المحرر بتقولّي السكريبت اتعمل فعلاً ولا لأ.
--- المفروض عمود result يطلّع "OK — الدوال الستة اتعملت".
-select case when count(*) >= 6 then 'OK — الدوال الستة اتعملت'
-            else 'ناقص ' || (6 - count(*))::text || ' — السكريبت مبيتشغّلش على المشروع ده'
-       end as result,
-       string_agg(p.proname, ', ' order by p.proname) as funcs
-  from pg_proc p
-  join pg_namespace n on n.oid = p.pronamespace
- where n.nspname = 'public' and p.proname like 'portfolio%';
+-- فحص سريع: آخر نتيجة في المحرر بتقولّي السكريبت اتعمل هنا ولا لأ.
+select case when missing is null then 'OK — الدوال الأربعة اتعملت'
+             else 'ناقص: ' || missing || ' — جرب تشغّل السكريبت على المشروع اللي مفتوح دلوقتي'
+        end as result,
+        (select string_agg(email, ', ') from portfolio.admins) as allowed_emails,
+        -- الأذنين الحقيقية لكل دالة بعد ما اتنفذت: anon لازم يبقى FA فقط.
+        (select jsonb_object_agg(p.proname, p.proacl)
+           from pg_proc p
+           join pg_namespace n on n.oid = p.pronamespace
+          where n.nspname = 'public' and p.proname like 'portfolio_%') as grants
+  from (
+    select string_agg(w.name, ', ' order by w.name) as missing
+      from (values ('portfolio_submit_lead'), ('portfolio_leads'),
+                   ('portfolio_lead_status'), ('portfolio_delete_lead')) as w(name)
+     where not exists (
+        select 1 from pg_proc p
+        join pg_namespace n on n.oid = p.pronamespace
+        where n.nspname = 'public' and p.proname = w.name
+     )
+  ) s;
